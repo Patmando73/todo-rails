@@ -1,4 +1,6 @@
+<ul>
 
-<h1><%= @post.title %></h1>
-
-<p><%= @post.content %></p>
+<% @users.each do |d| %>
+<li><%= d.email %></li>
+<% end  %>
+</ul>
