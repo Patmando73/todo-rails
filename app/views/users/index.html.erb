@@ -1,6 +1,6 @@
 <ul>
 
 <% @users.each do |d| %>
-<li><a href="<%= user_path(d.id) %>"> <%= d.email %></a></li>
+<li><a href="<%= user_path(d.id) %>"> <%= d.username %> - <%= d.email %></a></li>
 <% end  %>
 </ul>
