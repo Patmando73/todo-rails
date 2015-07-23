@@ -19,9 +19,18 @@
   </tbody>
 </table>
 
+<div>
 <%= link_to 'New user', new_user_path %>
+</div>
 
+<div>
 <%= link_to 'Add todo', new_task_path %>
+
+</div>
+<div>
+<%= link_to 'log out', login_path %>
+
+</div>
 
 
 <h3>Todos</h3>
@@ -37,6 +46,8 @@
   <strong>Content:</strong>
   <%= d.content %>
 </p>
+
+    <p>-----------------------------</p>
 
 <% end %>
 
