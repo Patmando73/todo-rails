@@ -1,6 +1,22 @@
 Rails.application.routes.draw do
 
 
+
+  root "users#login"
+
+  get "/users/login" => "users#login", :as => "login"
+
+  post "/users/login" => "users#login_confirm"
+
+  get "/users/logout" => "users#logout", :as => "logout"
+
+  get "/user" => "users#show", :as => "user"
+
+  get "/edit_user" => "users#edit", :as => "edit_user"
+
+  put "/user" => "users#update"
+
+
   resources :tasks
   resources :users
   # The priority is based upon order of creation: first created -> highest priority.

@@ -1,29 +1,30 @@
-<%= form_for(@task) do |f| %>
-  <% if @task.errors.any? %>
+<%= form_for(@user) do |f| %>
+  <% if @user.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@task.errors.count, "error") %> prohibited this task from being saved:</h2>
+      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this task from being saved:</h2>
 
       <ul>
-      <% @task.errors.full_messages.each do |message| %>
+      <% @user.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
       </ul>
     </div>
   <% end %>
 
+    <div>
+      <%= f.hidden_field :user_id, :value => @user.id %>
+
+    </div>
+
   <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
+    <%= f.label :email %><br>
+    <%= f.text_field :email %>
   </div>
   <div class="field">
-    <%= f.label :content %><br>
-    <%= f.text_area :content %>
-  </div>
-  <div class="field">
-    <%= f.label :user_id %><br>
-    <%= f.number_field :user_id %>
+    <%= f.label :password %><br>
+    <%= f.text_area :password %>
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit("login") %>
   </div>
 <% end %>

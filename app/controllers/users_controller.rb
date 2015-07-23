@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_action :check_login, except: [:new, :create, :login, :login_confirm]
 
 
   def index
@@ -27,6 +28,24 @@ class UsersController < ApplicationController
       # erb :"users/new" # That's Sinatra though.
       render users_path # "users" folder is assumed.
     end
+  end
+
+  def login
+  end
+
+  def login_confirm
+    @user = User.find_by(email: params[:user][:email])
+    if @user.correct_password?(params[:user][:password])
+      session[:user_id] = @user.id
+      redirect_to user_path
+    else
+      render "login"
+    end
+  end
+
+  def logout
+    session[:user_id] = nil
+    redirect_to users_path
   end
 
 
@@ -59,6 +78,14 @@ class UsersController < ApplicationController
 
   def user_params
     params.permit(:email, :password, :username)
+  end
+
+  def check_login
+    if session[:user_id] == nil
+      redirect_to new_user_path
+    else
+      @user = User.find(session[:user_id])
+    end
   end
 
 end
