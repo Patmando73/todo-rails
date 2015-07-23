@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :check_login, except: [:new, :create, :login, :login_confirm]
+  # before_action :check_login, except: [:new, :create, :login, :login_confirm]
 
 
   def index
@@ -18,15 +18,12 @@ class UsersController < ApplicationController
 
   # Processes the new-user form submission.
   def create
-    @user = User.new(user_params)
-
+    @user = User.new(user_params_and_password)
+    @user.encrypt_password(params[:password])
     if @user.save
-      redirect_to users_path # Redirection needs a request path.
+      redirect_to user_path
     else
-      # Rendering needs a specific view template to show.
-
-      # erb :"users/new" # That's Sinatra though.
-      render users_path # "users" folder is assumed.
+      render users_path
     end
   end
 
@@ -34,8 +31,8 @@ class UsersController < ApplicationController
   end
 
   def login_confirm
-    @user = User.find_by(email: params[:user][:email])
-    if @user.correct_password?(params[:user][:password])
+    @user = User.find_by(email: params[:email])
+    if @user.correct_password?(params[:password])
       session[:user_id] = @user.id
       redirect_to user_path
     else
@@ -78,6 +75,10 @@ class UsersController < ApplicationController
 
   def user_params
     params.permit(:email, :password, :username)
+  end
+
+  def user_params_and_password
+    params.permit(:name, :email, :password)
   end
 
   def check_login
