@@ -1,14 +1,16 @@
 class UsersController < ApplicationController
-  # before_action :check_login, except: [:new, :create, :login, :login_confirm]
+  before_action :check_login, except: [:new, :create, :login, :login_confirm]
 
 
   def index
-    @users = User.all
+    @users = User.find(session[:user_id])
+    @tasks = @user.tasks
   end
 
   def destroy
-    @user = User.find(params[:id])
+    @user = User.find(session[:user_id])
     @user.destroy
+    redirect_to users_path
   end
 
   def new
@@ -21,7 +23,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params_and_password)
     @user.encrypt_password(params[:password])
     if @user.save
-      redirect_to user_path
+      redirect_to user_path(session[:user_id])
     else
       render users_path
     end
@@ -34,7 +36,7 @@ class UsersController < ApplicationController
     @user = User.find_by(email: params[:email])
     if @user.correct_password?(params[:password])
       session[:user_id] = @user.id
-      redirect_to user_path
+      redirect_to user_path(session[:user_id])
     else
       render "login"
     end
@@ -48,13 +50,13 @@ class UsersController < ApplicationController
 
 
   def edit
-    @user = User.find(params[:id])
+    @user = User.find(session[:user_id])
     # Automatically load the view in /views/users/edit.html.erb
     end
 
   # Processes the edit-user form submission.
   def update
-    @user = User.find(params[:id])
+    @user = User.find(session[:user_id])
     if @user.update_attributes(user_params)
       redirect_to user_path # Redirection needs a request path.
     else
@@ -67,18 +69,18 @@ class UsersController < ApplicationController
 
   def show
 
-    @user = User.find(params[:id])
+    @user = User.find(session[:user_id])
 
   end
 
   private
 
   def user_params
-    params.permit(:email, :password, :username)
+    params.permit(:email, :username)
   end
 
   def user_params_and_password
-    params.permit(:name, :email, :password)
+    params.permit(:username, :email, :password)
   end
 
   def check_login

@@ -1,6 +1,41 @@
-<ul>
+<h1><%= @user.username %></h1>
 
-<% @users.each do |d| %>
-<li><a href="<%= user_path(d.id) %>"> <%= d.username %> - <%= d.email %></a></li>
-<% end  %>
-</ul>
+
+
+<table>
+  <thead>
+  <tr>
+    <th>Email</th>
+    <th colspan="3"></th>
+  </tr>
+  </thead>
+
+  <tbody>
+      <tr>
+        <td><%= @user.email %></td>
+        <td><%= link_to 'Edit', edit_user_path(@user.id) %></td>
+        <td><%= link_to 'Destroy', @user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+  </tbody>
+</table>
+
+<%= link_to 'New user', new_user_path %>
+
+<%= link_to 'Add todo', new_task_path %>
+
+
+<h3>Todos</h3>
+
+<%= @tasks.each do |d| %>
+
+<p>
+  <strong>Name:</strong>
+  <%= d.name %>
+</p>
+
+<p>
+  <strong>Content:</strong>
+  <%= d.content %>
+</p>
+
+<% end %>
